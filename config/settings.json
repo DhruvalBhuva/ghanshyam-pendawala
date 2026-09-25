@@ -1,0 +1,41 @@
+{
+  "site": {
+    "name": "Ghanshyam Penda Wala",
+    "url": "https://ghanshyampendawala.com",
+    "title": "Ghanshyam Penda Wala | Traditional Indian Sweets",
+    "description": "Traditional penda and Indian sweets, freshly made by Ghanshyam Penda Wala since 1973. Enquire on WhatsApp.",
+    "language": "en-IN",
+    "currency": "INR",
+    "currencySymbol": "₹"
+  },
+  "business": {
+    "email": "info@ghanshyampendawala.com",
+    "whatsappNumber": "919824183522",
+    "whatsappDisplay": "+91 98241 83522",
+    "primaryLocation": "Rajkot",
+    "locations": [
+      {
+        "name": "Rajkot",
+        "address": "Devpara, Kothariya Main Road, Rajkot",
+        "phone": "+91 98241 83522"
+      },
+      {
+        "name": "Mota Dadva",
+        "address": "Gondal–Atkot Highway, Mota Dadva",
+        "phone": "+91 98981 62583"
+      },
+      {
+        "name": "Gondal",
+        "address": "Jail Chowk, Gondal",
+        "phone": "+91 98241 30836"
+      }
+    ]
+  },
+  "theme": {
+    "brown": "#6f4e37",
+    "brownDeep": "#493526",
+    "gold": "#c5a16d",
+    "berry": "#cc2554",
+    "sand": "#e3dac9"
+  }
+}

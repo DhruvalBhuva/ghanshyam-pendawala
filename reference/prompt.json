@@ -1,0 +1,63 @@
+Primary color: #6f4e37, #c5a16d, #cc2554
+Secondary color: #E3DAC9 
+
+
+// ============= Image ================= //
+- Geneate me 7 8 variations of the images of my sweet. Each image should be saperate downloadable file. Not in one image grid because I want to use them separately on my website, and don't want to crop them later.
+- I have clicked the reference image from my phone camera. I want high-quality images of the same sweet from the reference image for my website. Preserve the exact symbol, imprint, shape, and unique design. 
+- Do not change the logo/symbol on the sweet. My webiste main color theme is white background with brown as secondary color. So please keep that in mind while generating the images.
+- I want some images with close-up shots and some with a bit of distance to show the sweet in context. Ensure the images look professional and appealing for my website visitors.
+- Please use soft lighting to enhance the texture and details of the sweet without creating harsh shadows.
+- Provide a mix of angles: top-down, side view, and 45-degree angles to showcase different aspects of the sweet.
+- Make sure you various possible images. For example, some images with few pieces (3-5) of the sweet, some with more pieces (10-15-20) and well arranged.
+
+
+// ============= Product Des ================= //
+Act as an expert SEO content writer. Write a compelling, high search engine optimized ** Product Description ** for a product listed on shopify store, based on the the following information:
+- **Product Name**: ""
+- **USP**:""
+- **Ingredients**: ""
+
+--- Output Formate:
+<About the Product>
+Why You’ll Love It: <>
+
+Make sure you use very common words, so all the people can easily understand.
+
+// ============= Product Des ================= //
+Act as an expert SEO content writer. Write a compelling, high search engine optimized ** Product Description ** for a product listed on shopify store, based on the the following information:
+- **Product Name**: Adadiya
+- **USP**: Special winter item, made out of pure Ghee
+- **Ingredients**: ["Adad no lot", "Pure Ghee", "Khand", "Mavo(made out of milk)", "Goond", "Taj, laving and sooth mix powdew", "kajoo", "badam", "kismiss", "milk"] (Write in english)
+
+--- Output Formate:
+<About the Product>
+Why You’ll Love It: <>
+
+Make sure you use very common words, so all the people can easily understand.
+
+=================================================================================================
+
+// ============= SEO Meta data prompt ================= //
+Act as an expert SEO content writer. Write a compelling, high search engine optimized **Meta Title (max 60 characters)** and **Meta Description (max 160 characters)** for a product listed on shopify store, based on the the following information:
+- **Product Name**: [Insert Product Name]
+- **Target Audience**: [e.g., people looking for traditional Indian sweets, dessert lovers, festival shoppers]
+- **Price related USP**: [e.g., affordable, premium quality, value for money]
+- **Any special ingredients or features**: [e.g., made with natural ingredients, unique flavor, traditional recipe]
+- **Any offer or discount**: [e.g., limited time offer, discount available]
+- **Tone of Voice**: [e.g., friendly, professional, festive]
+- **Call to Action**: [e.g., Buy Now, Order Today, Limited Stock]
+- **Competitor Keywords**: [e.g., Indian sweets online, buy traditional sweets, best Indian desserts]
+
+Please ensure the Meta Title and Description are engaging, include relevant keywords naturally, and encourage users to click through to the product page. Return only the Meta Title and Meta Description without any additional text or formatting.===============================================
+
+Act as an expert SEO content writer. Write a compelling, high search engine optimized **Meta Title (max 60 characters)** and **Meta Description (max 160 characters)** for a product listed on shopify store, based on the the following information:
+- **Product Name**: Special Mava Penda 
+- **Target Audience**: [e.g., people looking for traditional Indian sweets, dessert lovers, festival shoppers]
+- **Price related USP**: [e.g., affordable, premium quality, value for money]
+- **Any special ingredients or features**: Made with only Mava, Sugar, Nutmeg, and Cardamom.
+- **Tone of Voice**: SEO friendly, festive, Winter
+- **Call to Action**: [e.g., Buy Now, Order Today]
+- **Competitor Keywords**: [e.g., Indian sweets online, buy traditional sweets, best Indian desserts]
+
+Please ensure the Meta Title and Description are engaging, include relevant keywords naturally, and encourage users to click through to the product page. Return only the Meta Title and Meta Description without any additional text or formatting.
