@@ -16,6 +16,13 @@ CONFIG = ROOT / "config"
 ASSETS = ROOT / "assets"
 OUTPUT = ROOT / "dist"
 PRODUCT_SLUG = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+FONT_FAMILIES = {
+    "system": 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    "arial": "Arial, Helvetica, sans-serif",
+    "verdana": "Verdana, Geneva, sans-serif",
+    "trebuchet": '"Trebuchet MS", sans-serif',
+    "georgia": "Georgia, serif",
+}
 
 
 def read_json(path):
@@ -68,6 +75,16 @@ def validate_settings(settings):
     for name, value in settings["theme"].items():
         if not re.fullmatch(r"#[0-9A-Fa-f]{3}(?:[0-9A-Fa-f]{3}|[0-9A-Fa-f]{5})?", value):
             raise ValueError(f"theme.{name} must be a 3, 6, or 8 digit hex color.")
+
+    typography = settings.get("typography", {})
+    for key in ("bodyFont", "headingFont"):
+        if typography.get(key) not in FONT_FAMILIES:
+            raise ValueError(
+                f"typography.{key} must be one of: {', '.join(FONT_FAMILIES)}."
+            )
+    base_font_size = typography.get("baseFontSize")
+    if isinstance(base_font_size, bool) or not isinstance(base_font_size, int) or not 16 <= base_font_size <= 20:
+        raise ValueError("typography.baseFontSize must be a whole number from 16 to 20.")
 
     return hostname.lower()
 
@@ -137,9 +154,10 @@ def product_page(product, settings, live_products):
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; style-src-attr 'none'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; style-src-attr 'none'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="theme-color" content="{esc(settings['theme']['brown'])}">
+    <link rel="icon" type="image/png" href="../../assets/brand/ghanshyam_penda_wala_logo_icon-rbg.png">
     <meta name="description" content="{esc(product['seoDescription'])}">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <title>{esc(product['seoTitle'])}</title>
@@ -151,9 +169,6 @@ def product_page(product, settings, live_products):
     <meta property="og:url" content="{esc(canonical)}">
     <meta property="og:image" content="{esc(absolute_images[0])}">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../styles.css">
     <link rel="stylesheet" href="../../theme.css">
     <script type="application/ld+json">{schema_json}</script>
@@ -296,9 +311,16 @@ def build():
         json.dumps({"products": live_products}, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
+    typography = settings["typography"]
     theme_css = ":root {\n" + "\n".join(
         f"  --{css_variable_name(key)}: {value};"
         for key, value in settings["theme"].items()
+    ) + "\n" + "\n".join(
+        (
+            f"  --sans: {FONT_FAMILIES[typography['bodyFont']]};",
+            f"  --serif: {FONT_FAMILIES[typography['headingFont']]};",
+            f"  --base-font-size: {typography['baseFontSize']}px;",
+        )
     ) + "\n}\n"
     (OUTPUT / "theme.css").write_text(theme_css, encoding="utf-8")
 

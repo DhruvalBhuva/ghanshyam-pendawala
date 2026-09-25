@@ -37,5 +37,10 @@
     "gold": "#c5a16d",
     "berry": "#cc2554",
     "sand": "#e3dac9"
+  },
+  "typography": {
+    "bodyFont": "system",
+    "headingFont": "system",
+    "baseFontSize": 18
   }
 }

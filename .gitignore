@@ -1,2 +1,5 @@
 dist/
 __pycache__/
+/assets/originals/
+/assets/watermarked/
+/assets/webp/
