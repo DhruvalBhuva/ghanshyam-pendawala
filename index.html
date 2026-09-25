@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="__SITE_LANGUAGE__">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; style-src-attr 'none'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="theme-color" content="#6f4e37" />
+    <meta name="description" content="__SITE_DESCRIPTION__" />
+    <title>__SITE_TITLE__</title>
+    <link rel="canonical" href="__CANONICAL_URL__" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="__SITE_NAME__" />
+    <meta property="og:title" content="__SITE_TITLE__" />
+    <meta property="og:description" content="__SITE_DESCRIPTION__" />
+    <meta property="og:url" content="__CANONICAL_URL__" />
+    <meta property="og:image" content="__OG_IMAGE__" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./theme.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="announcement">
+      Tradition, crafted fresh since 1973
+      <span aria-hidden="true">·</span> Rajkot, Gujarat
+    </div>
+
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="Ghanshyam Penda Wala home">
+        <img
+          src="./assets/brand/ghanshyam_penda_wala_logo_icon-rbg.png"
+          alt=""
+          width="52"
+          height="52"
+        />
+        <span><strong>Ghanshyam</strong><small>Penda Wala</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#products" data-category-link="Penda">Penda</a>
+        <a href="#products" data-category-link="Sweets">Sweets</a>
+        <a href="#products" data-category-link="Namkeen">Namkeen</a>
+        <a href="#story">Our story</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="header-order" href="#products"
+        >Explore sweets <span aria-hidden="true">↗</span></a
+      >
+    </header>
+
+    <main id="main">
+      <section class="hero" id="home" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span></span> A little sweetness, a lot of tradition
+          </p>
+          <h1 id="hero-title">Ghanshyam<br /><em>Penda Wala</em></h1>
+          <p class="hero-description">
+            Handcrafted penda and traditional Indian sweets, made with care and
+            shared across generations.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-dark" href="#products"
+              >Explore our sweets <span aria-hidden="true">↘</span></a
+            >
+            <a class="text-link" href="#story"
+              >Our story <span aria-hidden="true">→</span></a
+            >
+          </div>
+          <div class="hero-note">
+            <span class="note-mark">1973</span
+            ><span>Rooted in tradition.<br />Made fresh for your moments.</span>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img
+            src="./assets/watermarked/mava-penda-3.png"
+            alt="Freshly made Special Mava Penda"
+            fetchpriority="high"
+          />
+          <div class="image-caption">
+            <span>Made with care</span><span>Rajkot, Gujarat</span>
+          </div>
+          <span class="hero-seal" aria-hidden="true"
+            >Since<br /><b>1973</b></span
+          >
+        </div>
+      </section>
+
+      <section class="category-strip" aria-label="Shop by category">
+        <p>Find your favourite</p>
+        <a href="#products" data-category-link="Penda"
+          >01 <span>Penda</span><b aria-hidden="true">↗</b></a
+        >
+        <a href="#products" data-category-link="Sweets"
+          >02 <span>Sweets</span><b aria-hidden="true">↗</b></a
+        >
+        <a href="#products" data-category-link="Namkeen"
+          >03 <span>Namkeen</span><b aria-hidden="true">↗</b></a
+        >
+      </section>
+
+      <section
+        class="products-section"
+        id="products"
+        aria-labelledby="products-title"
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow"><span></span> From our kitchen to yours</p>
+            <h2 id="products-title">
+              A good day calls<br /><em>for something sweet.</em>
+            </h2>
+          </div>
+          <p class="section-intro">
+            Explore our traditional favourites. To place an order, choose a shop
+            and message us on WhatsApp.
+          </p>
+        </div>
+        <div
+          class="category-tabs"
+          role="group"
+          aria-label="Filter products by category"
+        >
+          <button
+            class="category-tab is-active"
+            type="button"
+            data-category="All"
+            aria-pressed="true"
+          >
+            All favourites
+          </button>
+          <button
+            class="category-tab"
+            type="button"
+            data-category="Penda"
+            aria-pressed="false"
+          >
+            Penda
+          </button>
+          <button
+            class="category-tab"
+            type="button"
+            data-category="Sweets"
+            aria-pressed="false"
+          >
+            Sweets
+          </button>
+          <button
+            class="category-tab"
+            type="button"
+            data-category="Namkeen"
+            aria-pressed="false"
+          >
+            Namkeen
+          </button>
+        </div>
+        <div class="product-grid" id="product-grid" aria-live="polite"></div>
+        <p class="catalog-note">
+          Prices and availability may change. Please confirm with your chosen
+          shop.
+        </p>
+      </section>
+
+      <section class="story-section" id="story" aria-labelledby="story-title">
+        <div class="story-image">
+          <img
+            src="./assets/watermarked/family.png"
+            alt="The people and tradition behind Ghanshyam Penda Wala"
+            loading="lazy"
+          />
+          <span>Made for moments worth sharing</span>
+        </div>
+        <div class="story-copy">
+          <p class="eyebrow"><span></span> Our story</p>
+          <h2 id="story-title">
+            A tradition that<br /><em>tastes like home.</em>
+          </h2>
+          <p>
+            Since 1973, we have been making authentic penda with dedication to
+            quality, purity, and honest flavour. Generations of families have
+            welcomed our sweets into everyday treats, celebrations, and festival
+            gatherings.
+          </p>
+          <p>
+            We keep the craft simple: carefully selected ingredients,
+            time-honoured recipes, and the care that makes every bite feel
+            familiar.
+          </p>
+          <a class="text-link" href="#contact"
+            >Come say hello <span aria-hidden="true">→</span></a
+          >
+        </div>
+      </section>
+
+      <section class="promise-row" aria-label="Our promise">
+        <div>
+          <span class="promise-number">01</span>
+          <h3>Tradition &amp; trust</h3>
+          <p>A family name serving sweet moments since 1973.</p>
+        </div>
+        <div>
+          <span class="promise-number">02</span>
+          <h3>Pure ingredients</h3>
+          <p>Carefully selected ingredients, made with attention.</p>
+        </div>
+        <div>
+          <span class="promise-number">03</span>
+          <h3>Here to help</h3>
+          <p>Local shops and real people ready to help with your order.</p>
+        </div>
+      </section>
+
+      <section
+        class="contact-section"
+        id="contact"
+        aria-labelledby="contact-title"
+      >
+        <div class="contact-heading">
+          <p class="eyebrow"><span></span> Visit or message us</p>
+          <h2 id="contact-title">
+            Let’s make your<br /><em>next moment sweeter.</em>
+          </h2>
+          <p>
+            For everyday orders, celebrations, and bulk enquiries, reach out to
+            your nearest shop.
+          </p>
+          <a class="text-link" href="mailto:info@ghanshyampendawala.com"
+            >info@ghanshyampendawala.com <span aria-hidden="true">↗</span></a
+          >
+        </div>
+        <div class="shop-list" id="shop-list"></div>
+      </section>
+
+      <section
+        class="policies-section"
+        id="policies"
+        aria-labelledby="policies-title"
+      >
+        <div class="policies-heading">
+          <p class="eyebrow"><span></span> The helpful details</p>
+          <h2 id="policies-title">Good to <em>know.</em></h2>
+        </div>
+        <div class="policy-list">
+          <details>
+            <summary>
+              Returns &amp; order changes <span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              Because our sweets are perishable, we do not accept returns. If an
+              order arrives damaged, incorrect, spoiled, or incomplete, contact
+              us within 24 hours and share a photo or video. We will review the
+              issue and arrange a replacement where appropriate; refunds are not
+              currently offered. Courier-related issues may need an
+              investigation. Orders cannot be cancelled once confirmed. For bulk
+              or custom orders, please contact the shop before confirming.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Shipping &amp; delivery <span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              Orders are arranged directly with a shop by WhatsApp or phone;
+              this website has no checkout. The live-store guidance is 2–4
+              business days for processing and generally 3–7 business days for
+              delivery in India (usually 2–4 days within Gujarat). Festival
+              periods and destination can affect timing and shipping charges.
+              Confirm availability, delivery service, charges, and timing with
+              your chosen shop before confirming an order. International
+              shipping is not currently offered. Please provide an accurate
+              address and reachable phone number; failed delivery due to
+              incorrect details or an unavailable recipient may result in
+              perishable goods being returned without a refund.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Storage &amp; freshness <span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              Keep sweets in a cool, dry place and away from warm areas. Milk
+              Penda and Special Mava Penda are best enjoyed within 10–12 days.
+              Follow any instructions on the package and check with your shop
+              for freshness guidance for other products.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Product details &amp; allergens <span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              Our sweets are handmade, so colour, shape, and weight may vary
+              slightly from photographs. Prices and availability can change; the
+              shop will confirm them before an order is accepted. Products are
+              prepared in a traditional sweet-making facility and may contain or
+              come into contact with milk and dairy, ghee, mawa, wheat, tree
+              nuts, or edible colours. Please ask the shop about ingredients
+              before ordering if you have an allergy.
+            </p>
+          </details>
+          <details>
+            <summary>Privacy <span aria-hidden="true">+</span></summary>
+            <p>
+              This website does not offer customer accounts, checkout, or
+              payment collection, and it does not have order forms. If you
+              contact a shop by WhatsApp, phone, or email, the details you share
+              are handled by that service and the shop so they can respond to
+              your enquiry. External services used to display this website, such
+              as Google Fonts and WhatsApp, may process connection or message
+              data under their own privacy policies. For privacy questions,
+              email info@ghanshyampendawala.com.
+            </p>
+          </details>
+          <details>
+            <summary>Website terms <span aria-hidden="true">+</span></summary>
+            <p>
+              Use this website only for lawful purposes. Product photographs are
+              examples; handmade items may differ slightly. Product details,
+              prices, and availability are subject to change, and an enquiry is
+              not an order until the shop confirms it. Products may contain
+              allergens; customers should confirm ingredients when needed. The
+              sale of perishable sweets is subject to the returns guidance
+              above. These terms are governed by the laws of India, with
+              disputes subject to the courts in Rajkot, Gujarat.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Business &amp; legal information <span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              Ghanshyam Penda Wala operates from Shree Ram Complex, Kothariya
+              Main Road, Rajkot, Gujarat 360002, India. For questions or
+              grievances, contact info@ghanshyampendawala.com or any shop listed
+              above. We aim to acknowledge grievances within 48 hours and
+              resolve them within one month. Website text, brand assets, and
+              product photographs belong to Ghanshyam Penda Wala; please do not
+              reuse them without permission.
+            </p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand footer-brand" href="#home">
+        <img
+          src="./assets/brand/ghanshyam_penda_wala_logo_icon-rbg.png"
+          alt=""
+          width="44"
+          height="44"
+          loading="lazy"
+        />
+        <span><strong>Ghanshyam</strong><small>Penda Wala</small></span>
+      </a>
+      <p>Traditional sweets, made with care since 1973.</p>
+      <div class="footer-links">
+        <a href="#products">Our sweets</a><a href="#contact">Contact</a
+        ><a href="#policies">Policies</a
+        ><a href="mailto:info@ghanshyampendawala.com">Email</a>
+      </div>
+      <small class="copyright"
+        >© <span id="year"></span> Ghanshyam Penda Wala</small
+      >
+    </footer>
+  </body>
+</html>
