@@ -10,7 +10,6 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import quote, urlsplit
 
-
 ROOT = Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "src"
 DATA = ROOT / "data"
@@ -69,13 +68,19 @@ def validate_settings(settings):
         or parsed_url.query
         or parsed_url.fragment
     ):
-        raise ValueError("site.url must be an HTTPS domain without a path, port, or credentials.")
+        raise ValueError(
+            "site.url must be an HTTPS domain without a path, port, or credentials."
+        )
 
     if not re.fullmatch(r"[0-9]{8,15}", settings["business"]["whatsappNumber"]):
-        raise ValueError("business.whatsappNumber must contain 8 to 15 digits, including country code.")
+        raise ValueError(
+            "business.whatsappNumber must contain 8 to 15 digits, including country code."
+        )
 
     for name, value in settings["theme"].items():
-        if not re.fullmatch(r"#[0-9A-Fa-f]{3}(?:[0-9A-Fa-f]{3}|[0-9A-Fa-f]{5})?", value):
+        if not re.fullmatch(
+            r"#[0-9A-Fa-f]{3}(?:[0-9A-Fa-f]{3}|[0-9A-Fa-f]{5})?", value
+        ):
             raise ValueError(f"theme.{name} must be a 3, 6, or 8 digit hex color.")
 
     typography = settings.get("typography", {})
@@ -85,8 +90,14 @@ def validate_settings(settings):
                 f"typography.{key} must be one of: {', '.join(FONT_FAMILIES)}."
             )
     base_font_size = typography.get("baseFontSize")
-    if isinstance(base_font_size, bool) or not isinstance(base_font_size, int) or not 16 <= base_font_size <= 20:
-        raise ValueError("typography.baseFontSize must be a whole number from 16 to 20.")
+    if (
+        isinstance(base_font_size, bool)
+        or not isinstance(base_font_size, int)
+        or not 16 <= base_font_size <= 20
+    ):
+        raise ValueError(
+            "typography.baseFontSize must be a whole number from 16 to 20."
+        )
 
     return hostname.lower()
 
@@ -124,9 +135,7 @@ def site_schema(settings):
         "name": site["name"],
         "url": f"{base_url}/",
         "logo": f"{base_url}/assets/brand/ghanshyam_penda_wala_logo_icon-rbg.png",
-        "sameAs": [
-            url for url in settings.get("social", {}).values() if url
-        ],
+        "sameAs": [url for url in settings.get("social", {}).values() if url],
         "contactPoint": {
             "@type": "ContactPoint",
             "telephone": business["whatsappDisplay"],
@@ -214,23 +223,24 @@ def product_page(product, settings, live_products):
         ensure_ascii=True,
     ).replace("<", "\\u003c")
     gallery = "\n".join(
-        f'''<button class="pdp-thumb{' is-selected' if index == 0 else ''}" type="button" data-gallery-src="../../{esc(image)}" data-gallery-alt="{esc(product['name'])} image {index + 1}" aria-label="Show product image {index + 1}" aria-pressed="{'true' if index == 0 else 'false'}">
+        f"""<button class="pdp-thumb{' is-selected' if index == 0 else ''}" type="button" data-gallery-src="../../{esc(image)}" data-gallery-alt="{esc(product['name'])} image {index + 1}" aria-label="Show product image {index + 1}" aria-pressed="{'true' if index == 0 else 'false'}">
           <img src="../../{esc(image)}" alt="" loading="lazy">
-        </button>'''
+        </button>"""
         for index, image in enumerate(images)
     )
     highlights = "\n".join(
         f"<li>{esc(item)}</li>" for item in product.get("highlights", [])
     )
     related = "\n".join(
-        f'''<a class="pdp-related-link" href="../{esc(item['slug'])}/">{esc(item['name'])}<span aria-hidden="true">↗</span></a>'''
+        f"""<a class="pdp-related-link" href="../{esc(item['slug'])}/">{esc(item['name'])}<span aria-hidden="true">↗</span></a>"""
         for item in live_products
         if item["slug"] != slug
     )
     order_url = whatsapp_link(business["whatsappNumber"], product["name"])
+    footer_order_url = whatsapp_link(business["whatsappNumber"], "your order")
     price = f"{settings['site']['currencySymbol']}{product['price']:,}"
     main_alt = esc(product.get("mainImageAlt", product["name"]))
-    return f'''<!doctype html>
+    return f"""<!doctype html>
 <html lang="{esc(site.get('language', 'en-IN'))}">
   <head>
     <meta charset="utf-8">
@@ -309,15 +319,43 @@ def product_page(product, settings, live_products):
         <div class="pdp-related-links">{related}</div>
       </section>
     </main>
-    <footer class="site-footer">
-    <a class="brand footer-brand" href="../../index.html"><img src="../../assets/brand/ghanshyam_penda_wala_logo_icon-rbg.png" alt="" width="44" height="44" loading="lazy"><span><strong>Ghanshyam</strong><small>Penda Wala</small></span></a>
-      <p>Traditional sweets, made with care since 1973.</p>
-      <div class="footer-links"><a href="../../index.html#products">Our sweets</a><a href="../../index.html#contact">Contact</a><a href="../../index.html#policies">Policies</a><a href="mailto:{esc(settings['business']['email'])}">Email</a></div>
-      <small class="copyright">© {esc(site['name'])}</small>
+        <!-- Keep this wave directly above the footer; both use the --berry theme token. -->
+        <div class="footer-wave" aria-hidden="true">
+            <svg viewBox="0 0 1440 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path fill="var(--berry)" fill-opacity="0.15" d="M0,32L60,42.7C120,53,240,75,360,69.3C480,64,600,32,720,32C840,32,960,64,1080,69.3C1200,75,1320,53,1380,42.7L1440,32L1440,160L0,160Z"></path>
+                <path fill="var(--berry)" d="M0,64L60,80C120,96,240,128,360,122.7C480,117,600,75,720,64C840,53,960,75,1080,90.7C1200,107,1320,117,1380,122.7L1440,128L1440,160L0,160Z"></path>
+            </svg>
+        </div>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <div class="footer-brand-group">
+                    <a class="brand footer-brand" href="../../index.html">
+                        <img src="../../assets/brand/ghanshyam_penda_wala_logo_icon-rbg.png" alt="" width="44" height="44" loading="lazy">
+                        <span><strong>Ghanshyam</strong><small>Penda Wala</small></span>
+                    </a>
+                    <p>Traditional sweets, made with care since 1973.</p>
+                </div>
+                <nav class="footer-links" aria-label="Footer navigation">
+                    <a href="../../index.html#products">Our sweets</a>
+                    <a href="../../index.html#contact">Contact</a>
+                    <a href="../../index.html#policies">Policies</a>
+                    <a href="mailto:{esc(settings['business']['email'])}">Email</a>
+                </nav>
+                <div class="footer-social">
+                    <p>Follow along</p>
+                    <nav class="social-links" aria-label="Social media">
+                        <a class="social-link" href="{esc(settings['social']['instagram'])}" target="_blank" rel="noopener noreferrer">Instagram</a>
+                        <a class="social-link" href="{esc(settings['social']['facebook'])}" target="_blank" rel="noopener noreferrer">Facebook</a>
+                        <a class="social-link" href="{esc(settings['social']['youtube'])}" target="_blank" rel="noopener noreferrer">YouTube</a>
+                        <a class="social-link" href="{esc(footer_order_url)}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                    </nav>
+                </div>
+                <small class="copyright">© {time.localtime().tm_year} {esc(site['name'])}</small>
+            </div>
     </footer>
   </body>
 </html>
-'''
+"""
 
 
 def build():
@@ -337,15 +375,33 @@ def build():
             raise ValueError(f"Product {slug!r} live flag must be true or false.")
         if not product.get("live", False):
             continue
+        for key in ("allOrder", "categoryOrder"):
+            if key in product and (
+                isinstance(product[key], bool)
+                or not isinstance(product[key], int)
+                or product[key] < 1
+            ):
+                raise ValueError(
+                    f"Product {slug!r} {key} must be a positive whole number."
+                )
         for key in ("name", "category", "description", "mainImage", "price"):
             if not product.get(key):
                 raise ValueError(f"Live product {slug!r} is missing {key!r}")
         price = product["price"]
-        if isinstance(price, bool) or not isinstance(price, (int, float)) or not math.isfinite(price) or price <= 0:
-            raise ValueError(f"Live product {slug!r} must have a positive numeric price.")
+        if (
+            isinstance(price, bool)
+            or not isinstance(price, (int, float))
+            or not math.isfinite(price)
+            or price <= 0
+        ):
+            raise ValueError(
+                f"Live product {slug!r} must have a positive numeric price."
+            )
         add_default_seo(product, settings["site"])
         if product["category"] not in {"Penda", "Sweets", "Namkeen"}:
-            raise ValueError(f"Unsupported category for {slug!r}: {product['category']}")
+            raise ValueError(
+                f"Unsupported category for {slug!r}: {product['category']}"
+            )
         if len(product["seoTitle"]) > 60 or len(product["seoDescription"]) > 160:
             raise ValueError(f"SEO title/description is too long for {slug!r}")
         image_path(product["mainImage"])
@@ -370,11 +426,13 @@ def build():
         "__SITE_NAME__": esc(settings["site"]["name"]),
         "__SITE_LANGUAGE__": esc(settings["site"].get("language", "en-IN")),
         "__CANONICAL_URL__": esc(f"{settings['site']['url'].rstrip('/')}/"),
-        "__OG_IMAGE__": esc(f"{settings['site']['url'].rstrip('/')}/assets/live/mava-penda-3.png"),
+        "__OG_IMAGE__": esc(
+            f"{settings['site']['url'].rstrip('/')}/assets/live/mava-penda-3.png"
+        ),
         "__BUSINESS_EMAIL__": esc(settings["business"]["email"]),
-        "__SITE_SCHEMA__": json.dumps(
-            site_schema(settings), ensure_ascii=True
-        ).replace("<", "\\u003c"),
+        "__SITE_SCHEMA__": json.dumps(site_schema(settings), ensure_ascii=True).replace(
+            "<", "\\u003c"
+        ),
     }
     for token, value in replacements.items():
         home = home.replace(token, value)
@@ -396,16 +454,22 @@ def build():
         encoding="utf-8",
     )
     typography = settings["typography"]
-    theme_css = ":root {\n" + "\n".join(
-        f"  --{css_variable_name(key)}: {value};"
-        for key, value in settings["theme"].items()
-    ) + "\n" + "\n".join(
-        (
-            f"  --sans: {FONT_FAMILIES[typography['bodyFont']]};",
-            f"  --serif: {FONT_FAMILIES[typography['headingFont']]};",
-            f"  --base-font-size: {typography['baseFontSize']}px;",
+    theme_css = (
+        ":root {\n"
+        + "\n".join(
+            f"  --{css_variable_name(key)}: {value};"
+            for key, value in settings["theme"].items()
         )
-    ) + "\n}\n"
+        + "\n"
+        + "\n".join(
+            (
+                f"  --sans: {FONT_FAMILIES[typography['bodyFont']]};",
+                f"  --serif: {FONT_FAMILIES[typography['headingFont']]};",
+                f"  --base-font-size: {typography['baseFontSize']}px;",
+            )
+        )
+        + "\n}\n"
+    )
     (OUTPUT / "theme.css").write_text(theme_css, encoding="utf-8")
 
     for product in live_products:
@@ -419,9 +483,7 @@ def build():
     sitemap_urls = [f"{base_url}/"] + [
         f"{base_url}/products/{product['slug']}/" for product in live_products
     ]
-    sitemap = "\n".join(
-        f"  <url><loc>{esc(url)}</loc></url>" for url in sitemap_urls
-    )
+    sitemap = "\n".join(f"  <url><loc>{esc(url)}</loc></url>" for url in sitemap_urls)
     (OUTPUT / "sitemap.xml").write_text(
         f'<?xml version="1.0" encoding="UTF-8"?>\n'
         f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{sitemap}\n</urlset>\n',
@@ -469,9 +531,15 @@ def watch_sources(stop_event):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Build or preview the static storefront.")
-    parser.add_argument("--serve", action="store_true", help="serve the built site locally")
-    parser.add_argument("--port", type=int, default=8000, help="local preview port (default: 8000)")
+    parser = argparse.ArgumentParser(
+        description="Build or preview the static storefront."
+    )
+    parser.add_argument(
+        "--serve", action="store_true", help="serve the built site locally"
+    )
+    parser.add_argument(
+        "--port", type=int, default=8000, help="local preview port (default: 8000)"
+    )
     args = parser.parse_args()
     output = build()
     if args.serve:

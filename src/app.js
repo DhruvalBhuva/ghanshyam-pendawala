@@ -60,6 +60,18 @@ function createProductCard(product, index) {
   image.alt = product.mainImageAlt || product.name;
   image.loading = index < 3 ? "eager" : "lazy";
   imageLink.append(image);
+  const alternateImagePath = product.gallery?.find(
+    (imagePath) => imagePath !== product.mainImage,
+  );
+  if (alternateImagePath) {
+    const alternateImage = document.createElement("img");
+    alternateImage.className = "product-image-alternate";
+    alternateImage.src = alternateImagePath;
+    alternateImage.alt = "";
+    alternateImage.loading = "lazy";
+    alternateImage.setAttribute("aria-hidden", "true");
+    imageLink.append(alternateImage);
+  }
   imageWrap.append(imageLink);
 
   const category = document.createElement("span");
@@ -110,10 +122,19 @@ function createProductCard(product, index) {
 }
 
 function renderProducts() {
-  const visibleProducts =
+  const matchingProducts =
     activeCategory === "All"
       ? products
       : products.filter((product) => product.category === activeCategory);
+  const orderField = activeCategory === "All" ? "allOrder" : "categoryOrder";
+  const visibleProducts = [...matchingProducts].sort((first, second) => {
+    const firstOrder = first[orderField] ?? Number.MAX_SAFE_INTEGER;
+    const secondOrder = second[orderField] ?? Number.MAX_SAFE_INTEGER;
+    return (
+      firstOrder - secondOrder ||
+      products.indexOf(first) - products.indexOf(second)
+    );
+  });
 
   productGrid.replaceChildren();
   if (visibleProducts.length === 0) {
@@ -141,21 +162,95 @@ function renderProducts() {
 
 function renderShops() {
   shopList.replaceChildren();
-  for (const shop of settings.business.locations) {
-    const article = document.createElement("article");
-    article.className = "shop-item";
-    article.dataset.reveal = "item";
+  const locations = [...settings.business.locations].sort((first, second) => {
+    const order = ["Rajkot", "Gondal", "Mota Dadva"];
+    return order.indexOf(first.name) - order.indexOf(second.name);
+  });
+  const tabs = document.createElement("div");
+  tabs.className = "branch-tabs";
+  tabs.setAttribute("role", "tablist");
+  tabs.setAttribute("aria-label", "Choose a branch");
+  const panel = document.createElement("div");
+  panel.className = "branch-panel";
+  panel.id = "branch-panel";
+  panel.setAttribute("role", "tabpanel");
+  panel.tabIndex = 0;
+  const buttons = locations.map((shop, index) => {
+    const button = document.createElement("button");
+    button.className = "branch-tab";
+    button.id = `branch-tab-${index}`;
+    button.type = "button";
+    button.setAttribute("role", "tab");
+    button.setAttribute("aria-controls", panel.id);
+    button.setAttribute("aria-selected", String(index === 0));
+    button.tabIndex = index === 0 ? 0 : -1;
+    button.textContent = shop.name;
+    button.addEventListener("click", () => selectBranch(index));
+    tabs.append(button);
+    return button;
+  });
+
+  function selectBranch(index) {
+    const shop = locations[index];
+    buttons.forEach((button, buttonIndex) => {
+      const isSelected = buttonIndex === index;
+      button.setAttribute("aria-selected", String(isSelected));
+      button.tabIndex = isSelected ? 0 : -1;
+    });
+    panel.setAttribute("aria-labelledby", buttons[index].id);
+    panel.replaceChildren();
+
     const title = document.createElement("h3");
     title.textContent = shop.name;
     const address = document.createElement("p");
     address.textContent = shop.address;
+    const actions = document.createElement("div");
+    actions.className = "branch-actions";
     const phone = document.createElement("a");
+    phone.className = "branch-link";
     phone.href = `tel:${shop.phone.replaceAll(" ", "")}`;
-    phone.textContent = shop.phone;
-    article.append(title, address, phone);
-    shopList.append(article);
+    phone.textContent = `Call ${shop.phone}`;
+    const directions = document.createElement("a");
+    directions.className = "branch-link";
+    directions.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(shop.address)}`;
+    directions.target = "_blank";
+    directions.rel = "noopener noreferrer";
+    directions.textContent = "Get directions ↗";
+    const message = document.createElement("a");
+    message.className = "button button-dark branch-whatsapp";
+    message.href = `https://wa.me/${shop.phone.replaceAll(/\D/g, "")}?text=${encodeURIComponent(`Hello, I would like to enquire with the ${shop.name} shop.`)}`;
+    message.target = "_blank";
+    message.rel = "noopener noreferrer";
+    message.textContent = "Message this branch ↗";
+    actions.append(phone, directions, message);
+    panel.append(title, address, actions);
   }
-  observeRevealTargets(shopList.querySelectorAll("[data-reveal]"));
+
+  tabs.addEventListener("keydown", (event) => {
+    const currentIndex = buttons.indexOf(document.activeElement);
+    let nextIndex = currentIndex;
+    if (event.key === "ArrowRight")
+      nextIndex = (currentIndex + 1) % buttons.length;
+    if (event.key === "ArrowLeft")
+      nextIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = buttons.length - 1;
+    if (nextIndex !== currentIndex) {
+      event.preventDefault();
+      buttons[nextIndex].focus();
+      selectBranch(nextIndex);
+    }
+  });
+
+  shopList.append(tabs, panel);
+  selectBranch(0);
+}
+
+function renderHeaderWhatsApp() {
+  const link = document.querySelector("#header-order");
+  link.href = whatsappUrl("your order");
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
 }
 
 function renderContactWhatsApp() {
@@ -217,6 +312,7 @@ Promise.all([fetch("./products.json"), fetch("./settings.json")])
     settings = config;
     renderProducts();
     renderShops();
+    renderHeaderWhatsApp();
     renderContactWhatsApp();
     renderSocialLinks();
   })

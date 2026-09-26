@@ -36,15 +36,15 @@
     "youtube": "https://www.youtube.com/@GhanshyamPendaWala"
   },
   "theme": {
-    "brown": "#CC2554",
-    "brownDeep": "#4A2335",
-    "gold": "#b1945e",
+    "brown": "#21181A",
+    "brownDeep": "#8E0F33",
+    "gold": "#D4AF37",
     "berry": "#CC2554",
-    "sand": "#f1dde4"
+    "sand": "#FDFBF7"
   },
   "typography": {
     "bodyFont": "system",
     "headingFont": "georgia",
-    "baseFontSize": 18
+    "baseFontSize": 20
   }
 }

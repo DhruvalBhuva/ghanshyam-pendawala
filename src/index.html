@@ -60,6 +60,9 @@
         <a href="#story">Our story</a>
         <a href="#contact">Contact</a>
       </nav>
+      <a class="header-order" id="header-order" href="#contact">
+        Order on WhatsApp <span aria-hidden="true">↗</span>
+      </a>
     </header>
 
     <main id="main">
@@ -92,6 +95,12 @@
             alt="Freshly made Special Mava Penda"
             fetchpriority="high"
           />
+          <span class="ingredient-badge ingredient-badge-one"
+            >Slow-cooked mava</span
+          >
+          <span class="ingredient-badge ingredient-badge-two"
+            >Cardamom &amp; nutmeg</span
+          >
           <div class="image-caption">
             <span>Made with care</span><span>A family tradition</span>
           </div>
@@ -263,7 +272,7 @@
             >
           </div>
         </div>
-        <div class="shop-list" id="shop-list"></div>
+        <div class="shop-list branch-directory" id="shop-list"></div>
       </section>
 
       <section
@@ -406,34 +415,58 @@
       </section>
     </main>
 
-    <footer class="site-footer">
-      <a class="brand footer-brand" href="#home">
-        <img
-          src="./assets/brand/ghanshyam_penda_wala_logo_icon-rbg.png"
-          alt=""
-          width="44"
-          height="44"
-          loading="lazy"
-        />
-        <span><strong>Ghanshyam</strong><small>Penda Wala</small></span>
-      </a>
-      <p>Traditional sweets, made with care since 1973.</p>
-      <div class="footer-links">
-        <a href="#products">Our sweets</a><a href="#contact">Contact</a
-        ><a href="#policies">Policies</a
-        ><a href="mailto:info@ghanshyampendawala.com">Email</a>
-      </div>
-      <div class="footer-social">
-        <p>Follow along</p>
-        <nav
-          class="social-links"
-          id="social-links"
-          aria-label="Social media"
-        ></nav>
-      </div>
-      <small class="copyright"
-        >© <span id="year"></span> Ghanshyam Penda Wala</small
+    <!-- Keep this wave directly above the footer; both use the --berry theme token. -->
+    <div class="footer-wave" aria-hidden="true">
+      <svg
+        viewBox="0 0 1440 160"
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="none"
       >
+        <path
+          fill="var(--berry)"
+          fill-opacity="0.15"
+          d="M0,32L60,42.7C120,53,240,75,360,69.3C480,64,600,32,720,32C840,32,960,64,1080,69.3C1200,75,1320,53,1380,42.7L1440,32L1440,160L0,160Z"
+        ></path>
+        <path
+          fill="var(--berry)"
+          d="M0,64L60,80C120,96,240,128,360,122.7C480,117,600,75,720,64C840,53,960,75,1080,90.7C1200,107,1320,117,1380,122.7L1440,128L1440,160L0,160Z"
+        ></path>
+      </svg>
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand-group">
+          <a class="brand footer-brand" href="#home">
+            <img
+              src="./assets/brand/ghanshyam_penda_wala_logo_icon-rbg.png"
+              alt=""
+              width="44"
+              height="44"
+              loading="lazy"
+            />
+            <span><strong>Ghanshyam</strong><small>Penda Wala</small></span>
+          </a>
+          <p>Traditional sweets, made with care since 1973.</p>
+        </div>
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="#products">Our sweets</a>
+          <a href="#contact">Contact</a>
+          <a href="#policies">Policies</a>
+          <a href="mailto:info@ghanshyampendawala.com">Email</a>
+        </nav>
+        <div class="footer-social">
+          <p>Follow along</p>
+          <nav
+            class="social-links"
+            id="social-links"
+            aria-label="Social media"
+          ></nav>
+        </div>
+        <small class="copyright"
+          >© <span id="year"></span> Ghanshyam Penda Wala</small
+        >
+      </div>
     </footer>
   </body>
 </html>
