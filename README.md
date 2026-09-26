@@ -17,6 +17,7 @@ Open <http://localhost:8000>. The server rebuilds the site when source, product,
 - Edit the `products` array in `data/products.json`.
 - Set `live` to `false` while preparing an item and `true` to publish it.
 - Use a unique lowercase `slug`, one of `Penda`, `Sweets`, or `Namkeen`, and a positive numeric `price`.
+- Set `allOrder` to rank a product in **All favourites** and `categoryOrder` to rank it inside its category. Use positive whole numbers; lower numbers appear first. If ranks tie, catalog order breaks the tie. Products without a rank stay after ranked products in catalog order.
 - Add the main product image and optional gallery images to `assets/live/`. Set `mainImage`, `mainImageAlt`, and `gallery` to their paths. The main image is included in the gallery automatically.
 - Add accurate `description`, `highlights`, `ingredients`, `shelfLife`, and `storage`. Product SEO fields are `seoTitle` (maximum 60 characters) and `seoDescription` (maximum 160 characters).
 - Use [reference/prompt.json](reference/prompt.json) for image-generation and product-copy prompts. Verify generated product facts before publishing.
@@ -25,7 +26,7 @@ The builder validates live product data and images, then generates each product 
 
 ## Site settings
 
-Edit `config/settings.json` to update site metadata, the default WhatsApp number, branch names and phone numbers, social profile URLs, currency, colors, and typography. The default WhatsApp number uses country code and digits only. Branch phone numbers are listed separately in `business.locations`.
+Edit `config/settings.json` to update site metadata, the announcement, Gujarati tagline and transliteration, WhatsApp inquiry messages, the default WhatsApp number, branch names and phone numbers, social profile URLs, currency, colors, and typography. Inquiry message templates support `{product}` and `{branch}` placeholders. The default WhatsApp number uses country code and digits only. Branch phone numbers are listed separately in `business.locations`.
 
 ## Publish changes
 

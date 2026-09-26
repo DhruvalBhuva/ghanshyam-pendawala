@@ -76,6 +76,12 @@ def validate_settings(settings):
         raise ValueError(
             "business.whatsappNumber must contain 8 to 15 digits, including country code."
         )
+    for location in settings["business"]["locations"]:
+        whatsapp_number = location.get("whatsappNumber")
+        if whatsapp_number and not re.fullmatch(r"[0-9]{8,15}", whatsapp_number):
+            raise ValueError(
+                f"Location {location['name']!r} whatsappNumber must contain 8 to 15 digits, including country code."
+            )
 
     for name, value in settings["theme"].items():
         if not re.fullmatch(

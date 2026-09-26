@@ -225,7 +225,7 @@ function renderShops() {
     const message = document.createElement("a");
     message.className = "button button-dark branch-whatsapp";
     message.href = whatsappUrl(
-      shop.phone.replaceAll(/\D/g, ""),
+      (shop.whatsappNumber || shop.phone).replaceAll(/\D/g, ""),
       inquiryMessage("branch", { branch: shop.name }),
     );
     message.target = "_blank";
