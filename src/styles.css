@@ -138,7 +138,7 @@ img {
 .eyebrow {
   letter-spacing: 0.08em;
 }
-.eyebrow > span {
+.eyebrow > span:first-child {
   background: var(--gold);
 }
 .button-dark {
@@ -435,11 +435,38 @@ img {
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
-.eyebrow > span {
+.eyebrow > span:first-child {
   display: inline-block;
   width: 22px;
   height: 1px;
   background: var(--berry);
+}
+.hero-tagline {
+  align-items: flex-start;
+  gap: 12px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.hero-tagline > span:first-child {
+  flex: 0 0 22px;
+  margin-top: 0.65rem;
+}
+.hero-tagline-copy {
+  display: grid;
+  gap: 2px;
+}
+.hero-tagline-gu {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.hero-tagline-transliteration {
+  color: var(--muted);
+  font-family: var(--serif);
+  font-size: 0.75rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.4;
 }
 h1,
 h2,

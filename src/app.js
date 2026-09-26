@@ -29,15 +29,21 @@ if (revealObserver) {
   observeRevealTargets(document.querySelectorAll("[data-reveal]"));
 }
 
-function whatsappUrl(productName) {
-  const message = `Hello, I would like to enquire about ${productName}.`;
-  return `https://wa.me/${settings.business.whatsappNumber}?text=${encodeURIComponent(message)}`;
+function whatsappUrl(number, message) {
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }
 
-function createWhatsAppLink(productName, className, label) {
+function inquiryMessage(type, values = {}) {
+  return settings.business.inquiryMessages[type].replace(
+    /\{(\w+)\}/g,
+    (_, key) => values[key] ?? "",
+  );
+}
+
+function createWhatsAppLink(message, className, label) {
   const link = document.createElement("a");
   link.className = className;
-  link.href = whatsappUrl(productName);
+  link.href = whatsappUrl(settings.business.whatsappNumber, message);
   link.target = "_blank";
   link.rel = "noopener noreferrer";
   link.textContent = label;
@@ -109,7 +115,7 @@ function createProductCard(product, index) {
   detailLink.href = `./products/${encodeURIComponent(product.slug)}/`;
   detailLink.textContent = "View details →";
   const orderLink = createWhatsAppLink(
-    product.name,
+    inquiryMessage("product", { product: product.name }),
     "product-order",
     "WhatsApp ↗",
   );
@@ -212,13 +218,16 @@ function renderShops() {
     phone.textContent = `Call ${shop.phone}`;
     const directions = document.createElement("a");
     directions.className = "branch-link";
-    directions.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(shop.address)}`;
+    directions.href = shop.mapsUrl;
     directions.target = "_blank";
     directions.rel = "noopener noreferrer";
     directions.textContent = "Get directions ↗";
     const message = document.createElement("a");
     message.className = "button button-dark branch-whatsapp";
-    message.href = `https://wa.me/${shop.phone.replaceAll(/\D/g, "")}?text=${encodeURIComponent(`Hello, I would like to enquire with the ${shop.name} shop.`)}`;
+    message.href = whatsappUrl(
+      shop.phone.replaceAll(/\D/g, ""),
+      inquiryMessage("branch", { branch: shop.name }),
+    );
     message.target = "_blank";
     message.rel = "noopener noreferrer";
     message.textContent = "Message this branch ↗";
@@ -248,14 +257,19 @@ function renderShops() {
 
 function renderHeaderWhatsApp() {
   const link = document.querySelector("#header-order");
-  link.href = whatsappUrl("your order");
+  link.href = whatsappUrl(
+    settings.business.whatsappNumber,
+    inquiryMessage("general"),
+  );
   link.target = "_blank";
   link.rel = "noopener noreferrer";
 }
 
 function renderContactWhatsApp() {
   const actions = document.querySelector("#contact-actions");
-  actions.append(createWhatsAppLink("your order", "text-link", "WhatsApp ↗"));
+  actions.append(
+    createWhatsAppLink(inquiryMessage("general"), "text-link", "WhatsApp ↗"),
+  );
 }
 
 function renderSocialLinks() {
@@ -277,7 +291,7 @@ function renderSocialLinks() {
   }
 
   socialLinks.append(
-    createWhatsAppLink("your order", "social-link", "WhatsApp"),
+    createWhatsAppLink(inquiryMessage("general"), "social-link", "WhatsApp"),
   );
 }
 

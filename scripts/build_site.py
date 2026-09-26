@@ -267,7 +267,7 @@ def product_page(product, settings, live_products):
   </head>
   <body class="pdp-page">
     <a class="skip-link" href="#main">Skip to content</a>
-    <div class="announcement">Tradition, crafted fresh since 1973 <span aria-hidden="true">·</span> Made for sharing</div>
+    <div class="announcement">{esc(site['announcement'])}</div>
     <header class="site-header">
       <a class="brand" href="../../index.html" aria-label="{esc(site['name'])} home">
         <img src="../../assets/brand/ghanshyam_penda_wala_logo_icon-rbg.png" alt="" width="52" height="52">
@@ -425,6 +425,9 @@ def build():
         "__SITE_DESCRIPTION__": esc(settings["site"]["description"]),
         "__SITE_NAME__": esc(settings["site"]["name"]),
         "__SITE_LANGUAGE__": esc(settings["site"].get("language", "en-IN")),
+        "__ANNOUNCEMENT__": esc(settings["site"]["announcement"]),
+        "__TAGLINE_GUJARATI__": esc(settings["site"]["taglineGujarati"]),
+        "__TAGLINE_TRANSLITERATION__": esc(settings["site"]["taglineTransliteration"]),
         "__CANONICAL_URL__": esc(f"{settings['site']['url'].rstrip('/')}/"),
         "__OG_IMAGE__": esc(
             f"{settings['site']['url'].rstrip('/')}/assets/live/mava-penda-3.png"

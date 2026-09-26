@@ -6,7 +6,10 @@
     "description": "Shop traditional Indian sweets and Gujarati mithai, including handcrafted penda and festive favourites. Enquire about delivery.",
     "language": "en-IN",
     "currency": "INR",
-    "currencySymbol": "₹"
+    "currencySymbol": "₹",
+    "announcement": "Ghanshyam Pendawala · સ્વાદ જે યાદ રહી જાય.",
+    "taglineGujarati": "સ્વાદ જે યાદ રહી જાય.",
+    "taglineTransliteration": "Swad je yaad rahi jaay"
   },
   "business": {
     "email": "info@ghanshyampendawala.com",
@@ -16,19 +19,27 @@
       {
         "name": "Rajkot",
         "address": "Devpara, Kothariya Main Road, Rajkot",
-        "phone": "+91 98241 83522"
+        "phone": "+91 98241 83522",
+        "mapsUrl": "https://maps.app.goo.gl/QLdKngyQNj1nG2vL6"
       },
       {
         "name": "Mota Dadva",
         "address": "Gondal–Atkot Highway, Mota Dadva",
-        "phone": "+91 98981 62583"
+        "phone": "+91 98981 62583",
+        "mapsUrl": "https://maps.app.goo.gl/EABo4iUpz9b1NUkT8"
       },
       {
         "name": "Gondal",
         "address": "Jail Chowk, Gondal",
-        "phone": "+91 98241 30836"
+        "phone": "+91 98241 30836",
+        "mapsUrl": "https://maps.app.goo.gl/YQ6hZSAptyj98woB7"
       }
-    ]
+    ],
+    "inquiryMessages": {
+      "product": "Hello! I'm interested in {product}. Could you please share today's availability, price, and delivery or pickup options? Thank you!",
+      "general": "Hello! I'd like to place an order. Could you please share today's available sweets, prices, and delivery or pickup options? Thank you!",
+      "branch": "Hello! I'd like to enquire with the {branch} branch. Could you please share today's available sweets, prices, and delivery or pickup options? Thank you!"
+    }
   },
   "social": {
     "instagram": "https://www.instagram.com/ghanshyam_pendawala/",
