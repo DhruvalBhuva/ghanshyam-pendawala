@@ -4,6 +4,30 @@ const categoryTabs = [...document.querySelectorAll(".category-tab")];
 let products = [];
 let settings;
 let activeCategory = "All";
+const revealObserver =
+  typeof IntersectionObserver === "function"
+    ? new IntersectionObserver(
+        (entries, observer) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          }
+        },
+        { rootMargin: "0px 0px -36px 0px", threshold: 0.12 },
+      )
+    : null;
+
+function observeRevealTargets(targets) {
+  if (!revealObserver) return;
+  for (const target of targets) revealObserver.observe(target);
+}
+
+if (revealObserver) {
+  document.body.classList.add("has-motion");
+  observeRevealTargets(document.querySelectorAll("[data-reveal]"));
+}
 
 function whatsappUrl(productName) {
   const message = `Hello, I would like to enquire about ${productName}.`;
@@ -23,6 +47,7 @@ function createWhatsAppLink(productName, className, label) {
 function createProductCard(product, index) {
   const article = document.createElement("article");
   article.className = "product-card";
+  article.dataset.reveal = "card";
 
   const imageWrap = document.createElement("div");
   imageWrap.className = "product-image-wrap";
@@ -98,7 +123,7 @@ function renderProducts() {
     title.textContent = `${activeCategory} availability`;
     const copy = document.createElement("p");
     copy.textContent =
-      "Our online selection is being updated. Message the Rajkot shop to ask what is freshly available today.";
+      "Our online selection is being updated. Message us on WhatsApp to ask what is freshly available today.";
     const contact = document.createElement("a");
     contact.href = "#contact";
     contact.className = "text-link";
@@ -111,6 +136,7 @@ function renderProducts() {
   visibleProducts.forEach((product, index) =>
     productGrid.append(createProductCard(product, index)),
   );
+  observeRevealTargets(productGrid.querySelectorAll("[data-reveal]"));
 }
 
 function renderShops() {
@@ -118,6 +144,7 @@ function renderShops() {
   for (const shop of settings.business.locations) {
     const article = document.createElement("article");
     article.className = "shop-item";
+    article.dataset.reveal = "item";
     const title = document.createElement("h3");
     title.textContent = shop.name;
     const address = document.createElement("p");
@@ -126,13 +153,37 @@ function renderShops() {
     phone.href = `tel:${shop.phone.replaceAll(" ", "")}`;
     phone.textContent = shop.phone;
     article.append(title, address, phone);
-    if (shop.name === settings.business.primaryLocation) {
-      article.append(
-        createWhatsAppLink("your order", "shop-whatsapp", "WhatsApp Rajkot ↗"),
-      );
-    }
     shopList.append(article);
   }
+  observeRevealTargets(shopList.querySelectorAll("[data-reveal]"));
+}
+
+function renderContactWhatsApp() {
+  const actions = document.querySelector("#contact-actions");
+  actions.append(createWhatsAppLink("your order", "text-link", "WhatsApp ↗"));
+}
+
+function renderSocialLinks() {
+  const socialLinks = document.querySelector("#social-links");
+  const profiles = [
+    ["Instagram", settings.social.instagram],
+    ["Facebook", settings.social.facebook],
+    ["YouTube", settings.social.youtube],
+  ];
+
+  for (const [label, url] of profiles) {
+    const link = document.createElement("a");
+    link.className = "social-link";
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = label;
+    socialLinks.append(link);
+  }
+
+  socialLinks.append(
+    createWhatsAppLink("your order", "social-link", "WhatsApp"),
+  );
 }
 
 function setCategory(category) {
@@ -166,6 +217,8 @@ Promise.all([fetch("./products.json"), fetch("./settings.json")])
     settings = config;
     renderProducts();
     renderShops();
+    renderContactWhatsApp();
+    renderSocialLinks();
   })
   .catch((error) => {
     productGrid.textContent =

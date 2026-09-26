@@ -4,6 +4,8 @@ import json
 import math
 import re
 import shutil
+import threading
+import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import quote, urlsplit
@@ -111,6 +113,56 @@ def add_default_seo(product, site):
         product["seoDescription"] = description
 
 
+def site_schema(settings):
+    site = settings["site"]
+    business = settings["business"]
+    base_url = site["url"].rstrip("/")
+    organization_id = f"{base_url}/#organization"
+    organization = {
+        "@type": "Organization",
+        "@id": organization_id,
+        "name": site["name"],
+        "url": f"{base_url}/",
+        "logo": f"{base_url}/assets/brand/ghanshyam_penda_wala_logo_icon-rbg.png",
+        "sameAs": [
+            url for url in settings.get("social", {}).values() if url
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": business["whatsappDisplay"],
+            "email": business["email"],
+            "contactType": "customer service",
+        },
+        "department": [
+            {
+                "@type": "Store",
+                "name": f"{site['name']} - {location['name']}",
+                "telephone": location["phone"],
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": location["address"],
+                    "addressLocality": location["name"],
+                    "addressRegion": "Gujarat",
+                    "addressCountry": "IN",
+                },
+            }
+            for location in business["locations"]
+        ],
+    }
+    website = {
+        "@type": "WebSite",
+        "@id": f"{base_url}/#website",
+        "url": f"{base_url}/",
+        "name": site["name"],
+        "inLanguage": site.get("language", "en-IN"),
+        "publisher": {"@id": organization_id},
+    }
+    return {
+        "@context": "https://schema.org",
+        "@graph": [organization, website],
+    }
+
+
 def product_page(product, settings, live_products):
     site = settings["site"]
     business = settings["business"]
@@ -122,7 +174,6 @@ def product_page(product, settings, live_products):
     absolute_images = [f"{site['url'].rstrip('/')}/{image}" for image in images]
     description = product["description"]
     schema = {
-        "@context": "https://schema.org",
         "@type": "Product",
         "name": product["name"],
         "description": description,
@@ -130,8 +181,38 @@ def product_page(product, settings, live_products):
         "brand": {"@type": "Brand", "name": site["name"]},
         "category": product["category"],
         "sku": slug,
+        "mainEntityOfPage": {"@type": "WebPage", "@id": canonical},
     }
-    schema_json = json.dumps(schema, ensure_ascii=True).replace("<", "\\u003c")
+    breadcrumb_schema = {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": f"{site['url'].rstrip('/')}/",
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": product["category"],
+                "item": f"{site['url'].rstrip('/')}/#products",
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": product["name"],
+                "item": canonical,
+            },
+        ],
+    }
+    schema_json = json.dumps(
+        {
+            "@context": "https://schema.org",
+            "@graph": [schema, breadcrumb_schema],
+        },
+        ensure_ascii=True,
+    ).replace("<", "\\u003c")
     gallery = "\n".join(
         f'''<button class="pdp-thumb{' is-selected' if index == 0 else ''}" type="button" data-gallery-src="../../{esc(image)}" data-gallery-alt="{esc(product['name'])} image {index + 1}" aria-label="Show product image {index + 1}" aria-pressed="{'true' if index == 0 else 'false'}">
           <img src="../../{esc(image)}" alt="" loading="lazy">
@@ -176,7 +257,7 @@ def product_page(product, settings, live_products):
   </head>
   <body class="pdp-page">
     <a class="skip-link" href="#main">Skip to content</a>
-    <div class="announcement">Tradition, crafted fresh since 1973 <span aria-hidden="true">·</span> Rajkot, Gujarat</div>
+    <div class="announcement">Tradition, crafted fresh since 1973 <span aria-hidden="true">·</span> Made for sharing</div>
     <header class="site-header">
       <a class="brand" href="../../index.html" aria-label="{esc(site['name'])} home">
         <img src="../../assets/brand/ghanshyam_penda_wala_logo_icon-rbg.png" alt="" width="52" height="52">
@@ -187,7 +268,7 @@ def product_page(product, settings, live_products):
         <a href="../../index.html#story">Our story</a>
         <a href="../../index.html#contact">Contact</a>
       </nav>
-      <a class="header-order" href="{esc(order_url)}" target="_blank" rel="noopener noreferrer">WhatsApp Rajkot <span aria-hidden="true">↗</span></a>
+    <a class="header-order" href="{esc(order_url)}" target="_blank" rel="noopener noreferrer">WhatsApp <span aria-hidden="true">↗</span></a>
     </header>
     <main id="main" class="pdp-main">
       <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -209,7 +290,7 @@ def product_page(product, settings, live_products):
           <p class="pdp-description">{esc(description)}</p>
           <div class="pdp-price-row"><span class="pdp-price">{esc(price)}</span><span>{esc(product.get('priceNote', 'Please confirm the current price with our shop.'))}</span></div>
           <a class="button button-dark pdp-order" href="{esc(order_url)}" target="_blank" rel="noopener noreferrer">Enquire on WhatsApp <span aria-hidden="true">↗</span></a>
-          <p class="pdp-contact-note">Message the Rajkot shop directly at {esc(business['whatsappDisplay'])}.</p>
+          <p class="pdp-contact-note">Send your enquiry directly on WhatsApp.</p>
           <div class="pdp-highlights"><h2>Why you’ll love it</h2><ul>{highlights}</ul></div>
           <dl class="pdp-facts">
             <div><dt>Ingredients</dt><dd>{esc(product.get('ingredients', 'Please contact the shop to confirm.'))}</dd></div>
@@ -221,7 +302,7 @@ def product_page(product, settings, live_products):
       <section class="pdp-story" aria-labelledby="pdp-story-title">
         <p class="eyebrow"><span></span> A sweet with a story</p>
         <h2 id="pdp-story-title">Tradition, made for <em>sharing.</em></h2>
-        <p>Ghanshyam Penda Wala has been making traditional sweets since 1973. For product availability, pack sizes, ingredients, and delivery details, speak directly with our Rajkot shop before placing your order.</p>
+        <p>Ghanshyam Penda Wala has been making traditional sweets since 1973. For product availability, pack sizes, ingredients, and delivery details, get in touch with us before placing your order.</p>
       </section>
       <section class="pdp-related" aria-labelledby="related-title">
         <div><p class="eyebrow"><span></span> Discover more</p><h2 id="related-title">More from <em>our kitchen.</em></h2></div>
@@ -291,6 +372,9 @@ def build():
         "__CANONICAL_URL__": esc(f"{settings['site']['url'].rstrip('/')}/"),
         "__OG_IMAGE__": esc(f"{settings['site']['url'].rstrip('/')}/assets/live/mava-penda-3.png"),
         "__BUSINESS_EMAIL__": esc(settings["business"]["email"]),
+        "__SITE_SCHEMA__": json.dumps(
+            site_schema(settings), ensure_ascii=True
+        ).replace("<", "\\u003c"),
     }
     for token, value in replacements.items():
         home = home.replace(token, value)
@@ -351,6 +435,39 @@ def build():
     return OUTPUT
 
 
+def source_signature():
+    watched_paths = [Path(__file__)]
+    for directory in (SOURCE, DATA, CONFIG, ASSETS / "brand", ASSETS / "live"):
+        if directory.exists():
+            watched_paths.extend(
+                path for path in directory.rglob("*") if path.is_file()
+            )
+    signature = []
+    for path in sorted(watched_paths):
+        try:
+            file_stat = path.stat()
+        except FileNotFoundError:
+            continue
+        signature.append((path, file_stat.st_mtime_ns, file_stat.st_size))
+    return tuple(signature)
+
+
+def watch_sources(stop_event):
+    previous_signature = source_signature()
+    changed_at = None
+    while not stop_event.wait(0.5):
+        current_signature = source_signature()
+        if current_signature != previous_signature:
+            previous_signature = current_signature
+            changed_at = time.monotonic()
+        elif changed_at is not None and time.monotonic() - changed_at >= 0.75:
+            try:
+                build()
+            except Exception as error:
+                print(f"Automatic rebuild failed: {error}")
+            changed_at = None
+
+
 def main():
     parser = argparse.ArgumentParser(description="Build or preview the static storefront.")
     parser.add_argument("--serve", action="store_true", help="serve the built site locally")
@@ -362,12 +479,19 @@ def main():
             *handler_args, directory=str(output), **handler_kwargs
         )
         server = ThreadingHTTPServer(("127.0.0.1", args.port), handler)
+        stop_watching = threading.Event()
+        watcher = threading.Thread(
+            target=watch_sources, args=(stop_watching,), daemon=True
+        )
+        watcher.start()
         print(f"Previewing at http://localhost:{args.port}/ (Ctrl+C to stop)")
+        print("Watching source files; saved changes rebuild automatically.")
         try:
             server.serve_forever()
         except KeyboardInterrupt:
             print("\nPreview server stopped.")
         finally:
+            stop_watching.set()
             server.server_close()
 
 

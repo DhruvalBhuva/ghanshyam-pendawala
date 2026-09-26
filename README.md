@@ -1,116 +1,44 @@
 # Ghanshyam Penda Wala
 
-A static storefront with no checkout or backend. Product pages are generated from JSON, and product enquiries open the Rajkot WhatsApp chat directly.
+Live storefront: [ghanshyampendawala.com](https://ghanshyampendawala.com). This is a static product catalogue; customers enquire by WhatsApp, phone, or email. There is no online checkout.
 
-## Run locally
+## Local preview
 
-From the project root, run:
+Requires Python 3. From the project root:
 
 ```powershell
 python scripts/build_site.py --serve
 ```
 
-Then open <http://localhost:8000>. The command rebuilds the site and serves the generated `dist/` folder. Press Ctrl+C to stop it. To only generate the files, run `python scripts/build_site.py`.
+Open <http://localhost:8000>. The server rebuilds the site when source, product, settings, or published image files change; refresh the browser to see updates. Press Ctrl+C to stop. To build once without starting a server, run `python scripts/build_site.py`.
 
-## Add or edit products
+## Products and images
 
-Edit the `products` array in `data/products.json`:
+- Edit the `products` array in `data/products.json`.
+- Set `live` to `false` while preparing an item and `true` to publish it.
+- Use a unique lowercase `slug`, one of `Penda`, `Sweets`, or `Namkeen`, and a positive numeric `price`.
+- Add the main product image and optional gallery images to `assets/live/`. Set `mainImage`, `mainImageAlt`, and `gallery` to their paths. The main image is included in the gallery automatically.
+- Add accurate `description`, `highlights`, `ingredients`, `shelfLife`, and `storage`. Product SEO fields are `seoTitle` (maximum 60 characters) and `seoDescription` (maximum 160 characters).
+- Use [reference/prompt.json](reference/prompt.json) for image-generation and product-copy prompts. Verify generated product facts before publishing.
 
-1. Copy the example below into the `products` array. Add a comma after the previous product object.
-2. Put only the photos you want to publish in `assets/live/`, then use those filenames in the product data. `mainImage` is the main photo; `gallery` contains optional extra photos. The main photo is automatically included in the PDP gallery. Photos in `assets/watermarked/` are a local archive and are ignored by Git.
-3. Enter the product name, price, full description, ingredients, shelf life, and storage details.
-4. Set `category` to exactly `Namkeen` for namkeen, `Sweets` for sweets, or `Penda` for penda. Change the `slug` to a unique lowercase URL name with hyphens.
-5. Keep `live` as `false` while preparing the listing. Set it to `true` when you are ready to publish.
-6. Run `python scripts/build_site.py`, then refresh the local site. The product card, PDP, and sitemap entry are generated automatically. Its page URL will be `/products/your-namkeen-name/`.
+The builder validates live product data and images, then generates each product page and updates the sitemap. Do not edit `dist/`; it is regenerated on every build.
 
-Example Namkeen product:
+## Site settings
 
-```json
-{
-  "slug": "your-namkeen-name",
-  "live": false,
-  "name": "Your Namkeen Name",
-  "category": "Namkeen",
-  "price": 0,
-  "priceNote": "Confirm pack size and current price on WhatsApp.",
-  "mainImage": "./assets/live/namkeen-main.png",
-  "mainImageAlt": "Your Namkeen Name from Ghanshyam Penda Wala",
-  "gallery": ["./assets/live/namkeen-image-2.png"],
-  "description": "Describe the namkeen, its taste, texture, ingredients, and when it is enjoyed.",
-  "highlights": ["Add a product highlight"],
-  "ingredients": "Enter the confirmed ingredients",
-  "shelfLife": "Enter the confirmed shelf life",
-  "storage": "Enter the storage instructions"
-}
-```
+Edit `config/settings.json` to update site metadata, the default WhatsApp number, branch names and phone numbers, social profile URLs, currency, colors, and typography. The default WhatsApp number uses country code and digits only. Branch phone numbers are listed separately in `business.locations`.
 
-This is a draft example: replace its names, filenames, and product details with real information before setting `live` to `true`. A live product needs an existing main image and a non-zero price. Extra gallery images and SEO fields are optional. If SEO fields are omitted, the build creates them from the product name and description.
+## Publish changes
 
-For a sweet, use the same object and set `category` to `Sweets`; for penda, use `Penda`.
+The live site is deployed through the existing Cloudflare Pages Git integration. Before publishing, run `python scripts/build_site.py` and check the local preview. Commit and push changes to the repository’s configured production branch; Cloudflare builds and deploys that branch. Check the deployment status in Cloudflare Pages, then verify the live site.
 
-## Change site settings
-
-Edit `config/settings.json` for the site title, description, canonical domain, currency, email, Rajkot WhatsApp number, shop locations, brand colors, or typography. Enter the WhatsApp number with country code and digits only, without `+` or spaces. All product inquiry links use this Rajkot number.
-
-To adjust typography, set `typography.bodyFont` and `typography.headingFont` to `system`, `arial`, `verdana`, `trebuchet`, or `georgia`. Set `typography.baseFontSize` to a whole number from `16` to `20`; the default is `18`. The current system-font defaults are simpler and larger than the previous Google Fonts styling. Rebuild and push to `main` to publish changes.
-
-## Project map
+## Main files
 
 ```text
-assets/
-  brand/         Store logo (required for build)
-  live/          Only product and storefront images published by the site
-  originals/     Original photo archive (local and ignored by Git)
-  watermarked/   Full watermarked photo archive (local and ignored by Git)
-  webp/          Converted photo archive (local and ignored by Git)
-config/          Site settings (required for build)
-data/            Product catalog (required for build)
-dist/             Generated website (build output; do not edit or commit)
-reference/        Product descriptions and working notes (optional)
-scripts/          Site builder (required); image converter (optional)
-src/              Homepage, styles, and browser scripts (required for build)
+src/                  Homepage, styles, and browser scripts
+data/products.json    Product catalogue
+config/settings.json  Site, branch, social, and theme settings
+assets/live/          Images published with the site
+reference/prompt.json Image and product-copy prompts
+scripts/build_site.py Build, validate, and serve the site
+dist/                 Generated output; do not edit
 ```
-
-For Cloudflare's source build, keep `src/`, `data/`, `config/`, `scripts/build_site.py`, `assets/brand/`, and `assets/live/`. The `.gitignore` excludes `assets/originals/`, `assets/watermarked/`, and `assets/webp/`, so `git add .` will not upload those archives. They also will not be present in a fresh Git clone; keep a separate backup if you may need them later. When publishing another product, copy just its required photos from your backup into `assets/live/`, update its image paths in `data/products.json`, then commit the new files. `scripts/convert_images.py` and `reference/` are optional tools and notes. `README.md` and `.gitignore` help people and Git manage the project but are not required to generate the website. The builder validates settings and product data, creates static pages under `dist/products/`, and writes `CNAME`, `sitemap.xml`, and `robots.txt`. `dist/` is generated on every deployment, and `__pycache__/` is generated by Python; neither needs to be committed.
-
-### Free deployment with Cloudflare Pages
-
-Cloudflare Pages supports private GitHub repositories and automatically builds/deploys on pushes to the production branch. The Free plan currently allows 500 builds per month, up to 20,000 files, and a maximum individual file size of 25 MiB. The deployed site is public even when its source repository is private. Review Cloudflare's current [Pages limits](https://developers.cloudflare.com/pages/platform/limits/) and [terms](https://www.cloudflare.com/terms/) before launch. This site has no checkout or credit-card form.
-
-1. Create a free Cloudflare account, then open **Workers & Pages → Create application → Pages → Connect to Git**. Connect GitHub and authorize access only to this repository if GitHub offers that choice.
-2. Select this repository and the `main` production branch.
-3. Set the framework preset to **None** (or **Other**) and use:
-
-```text
-Build command: python scripts/build_site.py
-Build output directory: dist
-Root directory: /
-```
-
-4. Save and deploy. Cloudflare will run the builder whenever you push to `main`. No GitHub Pages workflow, paid deployment service, or public GitHub repository is needed.
-5. In the Pages project, open **Custom domains → Set up a domain** and add `ghanshyampendawala.com`.
-
-#### Make changes live
-
-After the first successful deployment, Cloudflare watches the production branch you selected (use `main`). Edit the source files, product data, settings, or images; do not edit `dist/`, because it is regenerated during every build. To catch data or image mistakes before publishing, run `python scripts/build_site.py` from the project root.
-
-From the project root, commit and push your changes to the production branch:
-
-```powershell
-git add .
-git commit -m "Update storefront"
-git push origin main
-```
-
-Cloudflare automatically builds and deploys that push. In Cloudflare, open **Workers & Pages → your project → Deployments** and wait for the production deployment for your latest commit to show **Success**; then check the live domain. A push to another branch may create a preview deployment, but it does not update production until the change is merged or pushed to `main`. If the build fails, fix the reported error and push again; the previous successful deployment remains live.
-
-### Point the Namecheap domain
-
-Namecheap remains your registrar; Cloudflare will manage DNS after the nameserver change. An apex domain such as `ghanshyampendawala.com` requires Cloudflare DNS, so use the following order:
-
-1. In Cloudflare, add `ghanshyampendawala.com` as a domain/zone on the Free plan. Let the DNS quick scan run, then carefully compare its imported records with Namecheap's current **Advanced DNS → Host Records**. The quick scan may miss records.
-2. Before changing nameservers, copy every existing DNS record into Cloudflare, especially email `MX`, SPF, DKIM, and DMARC records. Missing mail records can interrupt `info@ghanshyampendawala.com`. Keep mail records DNS-only, not proxied. If DNSSEC is enabled at Namecheap, turn it off before switching nameservers; you can enable it again in Cloudflare after the zone becomes active.
-3. Cloudflare will show two assigned nameservers for your zone. In Namecheap, open **Domain List → Manage → Nameservers**, choose **Custom DNS**, enter those exact two nameservers, and save. Do not use guessed nameserver values.
-4. Wait for Cloudflare to mark the domain **Active**; nameserver changes can take up to 24 hours. Then complete the Pages custom-domain setup if it is still pending, wait for its certificate, and test `https://ghanshyampendawala.com`.
-
-After the switch, make DNS changes in Cloudflare, not Namecheap. Namecheap remains where you renew the domain. Cloudflare's [custom-domain instructions](https://developers.cloudflare.com/pages/configuration/custom-domains/) and [DNS migration steps](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/) may change, so follow the dashboard prompts if they differ. Avoid deleting existing DNS records until you have confirmed the website and domain email both work.

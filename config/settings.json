@@ -2,8 +2,8 @@
   "site": {
     "name": "Ghanshyam Penda Wala",
     "url": "https://ghanshyampendawala.com",
-    "title": "Ghanshyam Penda Wala | Traditional Indian Sweets",
-    "description": "Traditional penda and Indian sweets, freshly made by Ghanshyam Penda Wala since 1973. Enquire on WhatsApp.",
+    "title": "Ghanshyam Penda Wala | Indian Sweets & Gujarati Mithai",
+    "description": "Shop traditional Indian sweets and Gujarati mithai, including handcrafted penda and festive favourites. Enquire about delivery.",
     "language": "en-IN",
     "currency": "INR",
     "currencySymbol": "₹"
@@ -12,7 +12,6 @@
     "email": "info@ghanshyampendawala.com",
     "whatsappNumber": "919824183522",
     "whatsappDisplay": "+91 98241 83522",
-    "primaryLocation": "Rajkot",
     "locations": [
       {
         "name": "Rajkot",
@@ -31,16 +30,21 @@
       }
     ]
   },
+  "social": {
+    "instagram": "https://www.instagram.com/ghanshyam_pendawala/",
+    "facebook": "https://www.facebook.com/profile.php?id=100070397288433",
+    "youtube": "https://www.youtube.com/@GhanshyamPendaWala"
+  },
   "theme": {
-    "brown": "#6f4e37",
-    "brownDeep": "#493526",
-    "gold": "#c5a16d",
-    "berry": "#cc2554",
-    "sand": "#e3dac9"
+    "brown": "#CC2554",
+    "brownDeep": "#4A2335",
+    "gold": "#b1945e",
+    "berry": "#CC2554",
+    "sand": "#f1dde4"
   },
   "typography": {
     "bodyFont": "system",
-    "headingFont": "system",
+    "headingFont": "georgia",
     "baseFontSize": 18
   }
 }

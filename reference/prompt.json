@@ -1,63 +1,57 @@
-Primary color: #6f4e37, #c5a16d, #cc2554
-Secondary color: #E3DAC9 
-
-
-// ============= Image ================= //
-- Geneate me 7 8 variations of the images of my sweet. Each image should be saperate downloadable file. Not in one image grid because I want to use them separately on my website, and don't want to crop them later.
-- I have clicked the reference image from my phone camera. I want high-quality images of the same sweet from the reference image for my website. Preserve the exact symbol, imprint, shape, and unique design. 
-- Do not change the logo/symbol on the sweet. My webiste main color theme is white background with brown as secondary color. So please keep that in mind while generating the images.
-- I want some images with close-up shots and some with a bit of distance to show the sweet in context. Ensure the images look professional and appealing for my website visitors.
-- Please use soft lighting to enhance the texture and details of the sweet without creating harsh shadows.
-- Provide a mix of angles: top-down, side view, and 45-degree angles to showcase different aspects of the sweet.
-- Make sure you various possible images. For example, some images with few pieces (3-5) of the sweet, some with more pieces (10-15-20) and well arranged.
-
-
-// ============= Product Des ================= //
-Act as an expert SEO content writer. Write a compelling, high search engine optimized ** Product Description ** for a product listed on shopify store, based on the the following information:
-- **Product Name**: ""
-- **USP**:""
-- **Ingredients**: ""
-
---- Output Formate:
-<About the Product>
-Why You’ll Love It: <>
-
-Make sure you use very common words, so all the people can easily understand.
-
-// ============= Product Des ================= //
-Act as an expert SEO content writer. Write a compelling, high search engine optimized ** Product Description ** for a product listed on shopify store, based on the the following information:
-- **Product Name**: Adadiya
-- **USP**: Special winter item, made out of pure Ghee
-- **Ingredients**: ["Adad no lot", "Pure Ghee", "Khand", "Mavo(made out of milk)", "Goond", "Taj, laving and sooth mix powdew", "kajoo", "badam", "kismiss", "milk"] (Write in english)
-
---- Output Formate:
-<About the Product>
-Why You’ll Love It: <>
-
-Make sure you use very common words, so all the people can easily understand.
-
-=================================================================================================
-
-// ============= SEO Meta data prompt ================= //
-Act as an expert SEO content writer. Write a compelling, high search engine optimized **Meta Title (max 60 characters)** and **Meta Description (max 160 characters)** for a product listed on shopify store, based on the the following information:
-- **Product Name**: [Insert Product Name]
-- **Target Audience**: [e.g., people looking for traditional Indian sweets, dessert lovers, festival shoppers]
-- **Price related USP**: [e.g., affordable, premium quality, value for money]
-- **Any special ingredients or features**: [e.g., made with natural ingredients, unique flavor, traditional recipe]
-- **Any offer or discount**: [e.g., limited time offer, discount available]
-- **Tone of Voice**: [e.g., friendly, professional, festive]
-- **Call to Action**: [e.g., Buy Now, Order Today, Limited Stock]
-- **Competitor Keywords**: [e.g., Indian sweets online, buy traditional sweets, best Indian desserts]
-
-Please ensure the Meta Title and Description are engaging, include relevant keywords naturally, and encourage users to click through to the product page. Return only the Meta Title and Meta Description without any additional text or formatting.===============================================
-
-Act as an expert SEO content writer. Write a compelling, high search engine optimized **Meta Title (max 60 characters)** and **Meta Description (max 160 characters)** for a product listed on shopify store, based on the the following information:
-- **Product Name**: Special Mava Penda 
-- **Target Audience**: [e.g., people looking for traditional Indian sweets, dessert lovers, festival shoppers]
-- **Price related USP**: [e.g., affordable, premium quality, value for money]
-- **Any special ingredients or features**: Made with only Mava, Sugar, Nutmeg, and Cardamom.
-- **Tone of Voice**: SEO friendly, festive, Winter
-- **Call to Action**: [e.g., Buy Now, Order Today]
-- **Competitor Keywords**: [e.g., Indian sweets online, buy traditional sweets, best Indian desserts]
-
-Please ensure the Meta Title and Description are engaging, include relevant keywords naturally, and encourage users to click through to the product page. Return only the Meta Title and Meta Description without any additional text or formatting.
+{
+  "imagePrompt": {
+    "brandPalette": {
+      "background": "Clean white and warm off-white",
+      "accent": "Use #CC2554 and muted warm neutrals only in restrained props or details"
+    },
+    "prompt": "Use the attached real product photo as the source of truth. Generate 7 or 8 high-quality product photographs as separate, individually downloadable image files. Never combine them into a collage, grid, contact sheet, or single image. Preserve the exact sweet shown, including its shape, color, texture, pattern, stamp, logo, and imprint. Do not add, remove, redraw, or alter any mark or detail. Create a useful mix of close-ups and wider serving scenes; top-down, side, and 45-degree views; and neatly arranged groups of 3-5 and 10-20 pieces. Use soft, natural-looking light that reveals the real texture without harsh shadows. Keep food colors true to the reference, with simple white or warm off-white settings and subtle #CC2554 accents that never distract from the sweet. Use tasteful, realistic tableware and uncluttered compositions. Do not add text, labels, packaging claims, logos, watermarks, extra ingredients, or decorative marks that are not present in the reference. Each image must be a complete standalone photograph suitable for a product page.",
+    "variationIdeas": [
+      "A close 45-degree hero view of 3-5 pieces",
+      "A top-down arrangement of 10-20 pieces on a simple serving plate",
+      "A side view that clearly shows the sweet's height and texture",
+      "An extreme close-up focused on the real surface and imprint",
+      "A wider serving scene with a few pieces and understated tableware",
+      "A neat row or circular arrangement viewed from above",
+      "A small group photographed at eye level with soft window light",
+      "A clean product-page composition with generous negative space"
+    ]
+  },
+  "productDescriptionPrompt": {
+    "role": "You are an accurate product copywriter for Ghanshyam Penda Wala, a website for traditional Indian sweets and Gujarati mithai.",
+    "websiteContext": "This is a static product catalogue. Customers enquire with the shop on WhatsApp; the website does not have checkout. Do not imply that an order, price, pack size, or delivery is confirmed until the shop confirms it.",
+    "inputFields": {
+      "name": "Exact product name",
+      "category": "Penda, Sweets, or Namkeen",
+      "ingredients": "Verified ingredient list",
+      "productFacts": "Verified taste, texture, preparation, occasion, and other distinguishing details",
+      "shelfLife": "Verified shelf life, if known",
+      "storage": "Verified storage instructions, if known",
+      "brandName": "Ghanshyam Penda Wala"
+    },
+    "instructions": [
+      "Use only facts supplied in the input. Never invent ingredients, health benefits, awards, origins, preparation methods, freshness guarantees, prices, pack sizes, or delivery promises.",
+      "Write a clear, appealing description in common English. Aim for 50-90 words in 2-4 short sentences.",
+      "Name the product and category naturally. Use one relevant search phrase such as traditional Indian sweet, Gujarati mithai, penda, or namkeen only when it accurately describes the product. Do not repeat keywords unnaturally.",
+      "Describe verified taste, texture, ingredients, and suitable occasions. Do not make medical, dietary, or superiority claims without evidence.",
+      "Provide 3-5 concise highlights based only on supplied facts.",
+      "Keep ingredient names accurate. Translate only terms with a clear, reliable English equivalent; preserve uncertain terms and flag them for confirmation rather than guessing.",
+      "If shelf life or storage details are missing, write 'Please contact us to confirm' instead of making them up.",
+      "Write an original SEO title of no more than 60 characters, including the product name and brand when they fit.",
+      "Write an original meta description of no more than 160 characters. Clearly describe the sweet and invite the reader to enquire; do not claim checkout or guaranteed delivery.",
+      "Return only one valid JSON object matching the requested keys. Do not include Markdown fences or commentary."
+    ],
+    "outputTemplate": {
+      "description": "A 50-90 word product description",
+      "highlights": [
+        "Verified product highlight",
+        "Verified product highlight",
+        "Verified product highlight"
+      ],
+      "ingredients": "Verified ingredients or 'Please contact us to confirm.'",
+      "shelfLife": "Verified shelf life or 'Please contact us to confirm.'",
+      "storage": "Verified storage directions or 'Please contact us to confirm.'",
+      "seoTitle": "Product name and relevant search phrase (60 characters maximum)",
+      "seoDescription": "Accurate product summary and enquiry invitation (160 characters maximum)"
+    }
+  }
+}
