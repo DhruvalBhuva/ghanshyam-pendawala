@@ -40,10 +40,18 @@ function inquiryMessage(type, values = {}) {
   );
 }
 
+function defaultWhatsAppNumber() {
+  const rajkotBranch = settings?.business?.locations?.find(
+    (shop) => shop.name === "Rajkot",
+  );
+  return (rajkotBranch?.whatsappNumber || settings?.business?.whatsappNumber || "")
+    .replaceAll(/\D/g, "");
+}
+
 function createWhatsAppLink(message, className, label) {
   const link = document.createElement("a");
   link.className = className;
-  link.href = whatsappUrl(settings.business.whatsappNumber, message);
+  link.href = whatsappUrl(defaultWhatsAppNumber(), message);
   link.target = "_blank";
   link.rel = "noopener noreferrer";
   link.textContent = label;
@@ -258,7 +266,7 @@ function renderShops() {
 function renderHeaderWhatsApp() {
   const link = document.querySelector("#header-order");
   link.href = whatsappUrl(
-    settings.business.whatsappNumber,
+    defaultWhatsAppNumber(),
     inquiryMessage("general"),
   );
   link.target = "_blank";
